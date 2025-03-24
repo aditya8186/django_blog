@@ -1,0 +1,75 @@
+{% extends "base_generic.html" %}
+
+{% block title %}{{ blogpost.title }}{% endblock %}
+
+{% block content %}
+<div class="container mt-4">
+    <div class="row">
+        <div class="col-md-8">
+            <div class="card mb-4">
+                <div class="card-body">
+                    <h1 class="card-title">{{ blogpost.title }}</h1>
+                    <div class="d-flex justify-content-between align-items-center mb-3">
+                        <div>
+                            <span class="badge bg-primary">{{ blogpost.category|title }}</span>
+                            {% for tag in blogpost.tags.split %}
+                            <span class="badge bg-secondary">{{ tag.strip }}</span>
+                            {% endfor %}
+                        </div>
+                        <small class="text-muted">Posted by <a href="{{ blogpost.author.get_absolute_url }}">{{ blogpost.author }}</a> on {{ blogpost.post_date }}</small>
+                    </div>
+                    <div class="blog-content">
+                        {{ blogpost.description|linebreaks }}
+                    </div>
+                </div>
+            </div>
+
+            <!-- Comments Section -->
+            <div class="card">
+                <div class="card-header">
+                    <h3 class="mb-0">Comments</h3>
+                </div>
+                <div class="card-body">
+                    {% if user.is_authenticated %}
+                    <form method="post" action="{% url 'comment-create' blogpost.id %}" class="mb-4">
+                        {% csrf_token %}
+                        <div class="mb-3">
+                            <label for="comment" class="form-label">Add a Comment</label>
+                            <textarea name="description" class="form-control" id="comment" rows="3" required></textarea>
+                        </div>
+                        <button type="submit" class="btn btn-primary">Post Comment</button>
+                    </form>
+                    {% else %}
+                    <p class="text-muted">Please <a href="{% url 'login' %}">login</a> to leave a comment.</p>
+                    {% endif %}
+
+                    <div class="comments-list">
+                        {% for comment in blogpost.comments.all %}
+                        <div class="comment mb-3">
+                            <div class="d-flex justify-content-between align-items-center">
+                                <h6 class="mb-1">{{ comment.author }}</h6>
+                                <small class="text-muted">{{ comment.post_date|date:"F d, Y H:i" }}</small>
+                            </div>
+                            <p class="mb-1">{{ comment.description }}</p>
+                        </div>
+                        {% empty %}
+                        <p class="text-muted">No comments yet. Be the first to comment!</p>
+                        {% endfor %}
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-4">
+            <div class="card">
+                <div class="card-header">
+                    <h4 class="mb-0">About the Author</h4>
+                </div>
+                <div class="card-body">
+                    <p>{{ blogpost.author.bio }}</p>
+                    <a href="{{ blogpost.author.get_absolute_url }}" class="btn btn-outline-primary">View Author Profile</a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %} 
