@@ -25,7 +25,7 @@ SECRET_KEY = 'django-insecure-@#sd5oej2zc_j3+rv8l#fqw9@%bs@01!5ys=naml2y%^_)*^n@
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['djangoblogs-fqetghfscqe7ajar.canadacentral-01.azurewebsites.net', 'localhost', '127.0.0.1']
 
 
 # Application definition
@@ -128,3 +128,6 @@ EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
 
 LOGIN_REDIRECT_URL = '/blog/'
 LOGOUT_REDIRECT_URL = '/blog/'
+
+# CSRF Settings
+CSRF_TRUSTED_ORIGINS = ['https://djangoblogs-fqetghfscqe7ajar.canadacentral-01.azurewebsites.net']

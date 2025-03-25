@@ -103,7 +103,7 @@ def register(request):
             return redirect('index')
     else:
         form = UserRegistrationForm()
-    return render(request, 'blog/register.html', {'form': form})
+    return render(request, 'registration/register.html', {'form': form})
 
 @login_required
 def add_comment(request, pk):
